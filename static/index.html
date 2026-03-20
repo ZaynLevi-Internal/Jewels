@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aurielle Jewelry — Elegant Jewelry Boutique</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+      :root{
+        --accent:#c9a76b;
+        --muted:#f7f6f4;
+        --ink:#2b2b2b;
+        --card:#ffffff;
+      }
+      body{
+        font-family: 'Inter', system-ui, sans-serif;
+        color:var(--ink);
+        background: linear-gradient(180deg, var(--muted), #ffffff 60%);
+      }
+      h1,h2,h3{ font-family:'Playfair Display', serif; }
+      .navbar-brand{ font-family:'Playfair Display', serif; font-weight:700; letter-spacing:0.5px; }
+      .hero{ padding:5rem 0 4rem; }
+      .accent{ color:var(--accent); }
+      .btn-accent{ background:var(--accent); border:0; color:#fff; box-shadow:0 6px 18px rgba(201,167,107,0.12); }
+      .product-card{ border:0; border-radius:12px; overflow:hidden; transition:transform .25s, box-shadow .25s; }
+      .product-card:hover{ transform:translateY(-6px); box-shadow:0 12px 30px rgba(43,43,43,0.08); }
+      .service-icon{ width:64px; height:64px; border-radius:12px; background:linear-gradient(180deg,#fff,#fbf8f5); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(43,43,43,0.04); }
+      .gallery-img{ object-fit:cover; height:220px; width:100%; }
+      .testimonial{ background:linear-gradient(180deg,#ffffff,#fbfaf8); border-radius:12px; padding:1.5rem; box-shadow:0 6px 20px rgba(43,43,43,0.04); }
+      footer{ background:#fff; border-top:1px solid #eee; }
+
+      /* ── Chat widget ─────────────────────────────────────────── */
+      #chat-bubble{ position:fixed; bottom:24px; right:24px; z-index:9999; }
+
+      #chat-toggle{
+        width:60px; height:60px; border-radius:50%;
+        background:var(--accent); border:none;
+        box-shadow:0 8px 24px rgba(201,167,107,0.45);
+        display:flex; align-items:center; justify-content:center;
+        cursor:pointer; transition:transform .2s, box-shadow .2s; position:relative;
+      }
+      #chat-toggle:hover{ transform:scale(1.08); box-shadow:0 12px 28px rgba(201,167,107,0.55); }
+      #chat-toggle svg{ transition:opacity .2s, transform .2s; position:absolute; }
+      #chat-toggle .icon-close{ opacity:0; transform:rotate(-90deg); }
+      #chat-bubble.open #chat-toggle .icon-open { opacity:0; transform:rotate(90deg); }
+      #chat-bubble.open #chat-toggle .icon-close{ opacity:1; transform:rotate(0); }
+
+      #unread-badge{
+        position:absolute; top:-4px; right:-4px;
+        background:#e05555; color:#fff; font-size:11px; font-weight:700;
+        width:20px; height:20px; border-radius:50%;
+        display:none; align-items:center; justify-content:center;
+      }
+
+      #chat-panel{
+        position:absolute; bottom:72px; right:0; width:360px;
+        background:#fff; border-radius:20px;
+        box-shadow:0 20px 60px rgba(43,43,43,0.18);
+        display:flex; flex-direction:column; overflow:hidden;
+        opacity:0; transform:translateY(16px) scale(0.97);
+        pointer-events:none; transition:opacity .25s, transform .25s;
+      }
+      #chat-bubble.open #chat-panel{ opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+
+      .chat-header{
+        background:linear-gradient(135deg, var(--accent), #b8904e);
+        color:#fff; padding:16px 18px; display:flex; align-items:center; gap:12px;
+      }
+      .chat-header-avatar{
+        width:40px; height:40px; border-radius:50%;
+        background:rgba(255,255,255,0.2);
+        display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;
+      }
+      .chat-header-info .name{ font-family:'Playfair Display',serif; font-size:15px; font-weight:700; }
+      .chat-header-info .status{ font-size:12px; opacity:.85; display:flex; align-items:center; gap:5px; }
+      .status-dot{ width:7px; height:7px; border-radius:50%; background:#7ef58a; display:inline-block; }
+
+      #chat-messages{
+        flex:1; padding:16px; overflow-y:auto;
+        display:flex; flex-direction:column; gap:10px;
+        max-height:320px; min-height:200px; background:#faf9f7;
+      }
+      #chat-messages::-webkit-scrollbar{ width:4px; }
+      #chat-messages::-webkit-scrollbar-thumb{ background:#e0d8cc; border-radius:4px; }
+
+      .msg{ display:flex; flex-direction:column; max-width:82%; animation:msgIn .2s ease; }
+      @keyframes msgIn{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+      .msg.bot{ align-self:flex-start; }
+      .msg.user{ align-self:flex-end; align-items:flex-end; }
+
+      .msg-bubble{ padding:10px 14px; border-radius:16px; font-size:13.5px; line-height:1.55; word-break:break-word; }
+      .msg.bot .msg-bubble{ background:#fff; color:var(--ink); border-bottom-left-radius:4px; box-shadow:0 2px 8px rgba(43,43,43,0.07); }
+      .msg.user .msg-bubble{ background:var(--accent); color:#fff; border-bottom-right-radius:4px; }
+      .msg-time{ font-size:10px; color:#b0a898; margin-top:3px; padding:0 4px; }
+
+      .typing-bubble{
+        background:#fff; border-radius:16px; border-bottom-left-radius:4px;
+        padding:12px 16px; box-shadow:0 2px 8px rgba(43,43,43,0.07);
+        display:inline-flex; gap:5px; align-items:center; align-self:flex-start;
+      }
+      .typing-dot{ width:7px; height:7px; background:var(--accent); border-radius:50%; animation:bounce 1.2s infinite; }
+      .typing-dot:nth-child(2){ animation-delay:.2s; }
+      .typing-dot:nth-child(3){ animation-delay:.4s; }
+      @keyframes bounce{ 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+      #quick-replies{
+        padding:8px 14px 4px; display:flex; flex-wrap:wrap; gap:6px;
+        background:#faf9f7; border-top:1px solid #f0ede8;
+      }
+      .quick-btn{
+        font-size:12px; padding:5px 11px; border-radius:20px;
+        border:1px solid var(--accent); background:transparent; color:var(--accent);
+        cursor:pointer; transition:background .15s, color .15s; white-space:nowrap;
+      }
+      .quick-btn:hover{ background:var(--accent); color:#fff; }
+
+      #lead-form{ padding:14px 16px; background:#fff; border-top:1px solid #f0ede8; display:none; }
+      #lead-form.visible{ display:block; }
+      #lead-form input{
+        width:100%; padding:8px 12px; border:1px solid #e0dbd4;
+        border-radius:8px; font-size:13px; margin-bottom:8px;
+        outline:none; transition:border-color .15s; font-family:inherit;
+      }
+      #lead-form input:focus{ border-color:var(--accent); }
+      #lead-form-submit{
+        width:100%; padding:9px; border:none; border-radius:8px;
+        background:var(--accent); color:#fff; font-size:13px; font-weight:600;
+        cursor:pointer; transition:opacity .15s;
+      }
+      #lead-form-submit:hover{ opacity:.88; }
+
+      .chat-input-area{
+        padding:12px 14px; background:#fff; border-top:1px solid #f0ede8;
+        display:flex; gap:8px; align-items:flex-end;
+      }
+      #chat-input{
+        flex:1; border:1px solid #e0dbd4; border-radius:22px;
+        padding:9px 16px; font-size:13.5px; font-family:inherit;
+        resize:none; outline:none; max-height:100px; overflow-y:auto;
+        line-height:1.45; transition:border-color .15s;
+      }
+      #chat-input:focus{ border-color:var(--accent); }
+      #chat-send{
+        width:38px; height:38px; border-radius:50%;
+        background:var(--accent); border:none; color:#fff;
+        display:flex; align-items:center; justify-content:center;
+        cursor:pointer; flex-shrink:0; transition:transform .15s, opacity .15s;
+      }
+      #chat-send:hover{ transform:scale(1.08); }
+      #chat-send:disabled{ opacity:.5; cursor:default; transform:none; }
+      .chat-footer-brand{ text-align:center; font-size:10.5px; color:#c0b8ad; padding:6px 0 8px; background:#fff; }
+
+      @media(max-width:480px){ #chat-panel{ width:calc(100vw - 32px); right:-8px; } }
+    </style>
+  </head>
+  <body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-3">
+      <div class="container">
+        <a class="navbar-brand" href="#">Aurielle Jewelry</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="#collections">Collections</a></li>
+            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            <li class="nav-item ms-3 d-none d-lg-block"><a class="btn btn-outline-dark" href="#">Shop</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <h1 class="display-5 mb-3">Timeless pieces, crafted with care</h1>
+            <p class="lead text-muted mb-4">Discover artisanal necklaces, rings, and bespoke creations in gold, silver, diamonds and platinum. Elegant designs — made to last generations.</p>
+            <div class="d-flex gap-2">
+              <a class="btn btn-accent btn-lg" href="#collections">Explore Collections</a>
+              <a class="btn btn-outline-secondary btn-lg" href="#services">Our Services</a>
+            </div>
+            <div class="mt-4 d-flex gap-3">
+              <div class="me-3 text-center">
+                <div class="fw-bold">Free Shipping</div>
+                <small class="text-muted">On orders above ₹10,000</small>
+              </div>
+              <div class="text-center">
+                <div class="fw-bold">Lifetime Warranty</div>
+                <small class="text-muted">On manufacturing faults</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 d-none d-lg-block">
+            <div class="card shadow-sm border-0" style="border-radius:18px;overflow:hidden;">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg0aB7BcJz-BxafrPMJC-RKjApSvUePUo3gg&s" alt="jewelry hero" class="img-fluid">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLECTIONS -->
+    <section id="collections" class="py-5">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="h3">Featured Collections</h2>
+          <a href="#" class="text-muted">View all &rarr;</a>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="card product-card p-3">
+              <img src="https://www.tanishq.co.in/on/demandware.static/-/Sites-Tanishq-product-catalog/default/dw6743bcd9/images/hi-res/51W1D1NGPAA00_1.jpg" class="gallery-img rounded-3" alt="gold-necklace">
+              <div class="card-body">
+                <h5 class="card-title mb-1">Heritage Gold Necklace</h5>
+                <p class="text-muted small">Handcrafted 22k gold with filigree detail.</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div class="fw-bold">₹85,000</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card product-card p-3">
+              <img src="https://media.istockphoto.com/id/175218669/photo/wedding-ring.jpg?s=612x612&w=0&k=20&c=y4bF26LvC96_pUjPiKfCYEzBxrF7RUOxlIe7-Lj4smY=" class="gallery-img rounded-3" alt="diamond-ring">
+              <div class="card-body">
+                <h5 class="card-title mb-1">Solitaire Diamond Ring</h5>
+                <p class="text-muted small">Conflict-free brilliant cut diamond.</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div class="fw-bold">₹1,20,000</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card product-card p-3">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBUKHn6LcfoNbVtYc1ukuYTdSK6sNpTGPndQ&s" class="gallery-img rounded-3" alt="silver-bracelet">
+              <div class="card-body">
+                <h5 class="card-title mb-1">Classic Silver Bracelet</h5>
+                <p class="text-muted small">Sterling silver, polished finish.</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div class="fw-bold">₹9,500</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card product-card p-3">
+              <img src="https://www.jewelove.in/cdn/shop/files/jewelove-6mm-comfort-fit-platinum-wedding-band-sj-pto-258-men-s-band-only-1154836620_1025x.jpg?v=1744110809" class="gallery-img rounded-3" alt="platinum-band">
+              <div class="card-body">
+                <h5 class="card-title mb-1">Platinum Wedding Band</h5>
+                <p class="text-muted small">Comfort fit, elegant matte finish.</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div class="fw-bold">₹65,000</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card product-card p-3">
+              <img src="https://rubans.in/cdn/shop/files/rubans-voguish-18k-gold-plated-brass-crystal-ad-wing-stud-white-pearl-drop-earrings-earrings-1200472142.jpg?v=1761770705&width=360" class="gallery-img rounded-3" alt="pearl-earrings">
+              <div class="card-body">
+                <h5 class="card-title mb-1">Pearl Drop Earrings</h5>
+                <p class="text-muted small">Freshwater pearls with minimal gold detail.</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div class="fw-bold">₹14,500</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card product-card p-3">
+              <img src="https://www.goldcityjeweler.com/wp-content/uploads/2023/04/pasted-image-0-1080x675.jpg" class="gallery-img rounded-3" alt="custom-design">
+              <div class="card-body">
+                <h5 class="card-title mb-1">Bespoke Design Service</h5>
+                <p class="text-muted small">Work with our artisans to create your piece.</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div class="fw-bold">Starting ₹5,000</div><a class="btn btn-sm btn-outline-dark" href="#services">Enquire</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="py-5 bg-white">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="h3">Services</h2>
+          <p class="text-muted">Full-cycle services from appraisal to bespoke design and repairs.</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="service-icon mx-auto mb-3">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.09 4.24L18.6 7l-3.3 2.7L15.82 14 12 11.77 8.18 14l.52-4.3L5.4 7l4.51-.76L12 2z" fill="#c9a76b"/></svg>
+            </div>
+            <h5>Gold & Silver</h5>
+            <p class="text-muted small">Curated collections or custom pieces in gold & silver.</p>
+          </div>
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="service-icon mx-auto mb-3">
+              <svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 2l2 4 4 .5-3 2.5L16 15l-4-2-4 2 .9-6L4 6.5 8 6l2-4z" fill="#8fa8c9"/></svg>
+            </div>
+            <h5>Diamond Sourcing</h5>
+            <p class="text-muted small">Conflict-free diamonds with certification and appraisals.</p>
+          </div>
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="service-icon mx-auto mb-3">
+              <svg width="30" height="30" viewBox="0 0 24 24"><path d="M5 12h14v2H5z" fill="#b0b0b0"/></svg>
+            </div>
+            <h5>Repairs & Cleaning</h5>
+            <p class="text-muted small">Polishing, resizing, stone setting and routine maintenance.</p>
+          </div>
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="service-icon mx-auto mb-3">
+              <svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e0dfe6"/></svg>
+            </div>
+            <h5>Bespoke Design</h5>
+            <p class="text-muted small">Design consultations and 3D previews to bring your idea to life.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-5">
+      <div class="container">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-6">
+            <h2 class="h3 mb-3">About Aurielle</h2>
+            <p class="text-muted">Founded by master artisans passionate about craftsmanship. We blend traditional techniques with modern design — sourcing responsibly and delivering quality that lasts.</p>
+            <ul class="list-unstyled text-muted">
+              <li>&#8226; Certified appraisals & insurance documentation</li>
+              <li>&#8226; Ethical sourcing & traceability</li>
+              <li>&#8226; In-house design studio</li>
+            </ul>
+          </div>
+          <div class="col-lg-6">
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="testimonial">
+                  <div class="d-flex align-items-center mb-3">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=80&q=60" class="rounded-circle me-3" width="48" height="48" alt="customer">
+                    <div><strong>Priya S.</strong><div class="small text-muted">Verified buyer</div></div>
+                  </div>
+                  <p class="small mb-0">"Beautiful craftsmanship and warm service. My engagement ring is everything I hoped for — and more."</p>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="testimonial">
+                  <div class="d-flex align-items-center mb-3">
+                    <img src="https://img.freepik.com/free-photo/designer-working-3d-model_23-2149371896.jpg?semt=ais_hybrid&w=740&q=80" class="rounded-circle me-3" width="48" height="48" alt="customer2">
+                    <div><strong>Amit R.</strong><div class="small text-muted">Repeat customer</div></div>
+                  </div>
+                  <p class="small mb-0">"Quick resizing and excellent attention to detail. Highly recommend their repair service."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-5 bg-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <h3>Get in touch</h3>
+            <p class="text-muted">Visit our showroom or send a message to book a consultation.</p>
+            <ul class="list-unstyled">
+              <li><strong>Address:</strong> 123 Heritage Lane, Cityname</li>
+              <li><strong>Phone:</strong> +91 98765 43210</li>
+              <li><strong>Email:</strong> hello@aurielle.in</li>
+            </ul>
+          </div>
+          <div class="col-lg-6">
+            <div class="mb-3"><label class="form-label">Name</label><input class="form-control" placeholder="Your name"></div>
+            <div class="mb-3"><label class="form-label">Email</label><input class="form-control" placeholder="you@email.com"></div>
+            <div class="mb-3"><label class="form-label">Message</label><textarea class="form-control" rows="4" placeholder="How can we help?"></textarea></div>
+            <button class="btn btn-accent">Send message</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-4 mt-5">
+      <div class="container d-md-flex justify-content-between align-items-center">
+        <div class="mb-3 mb-md-0"><strong>Aurielle Jewelry</strong> &mdash; Crafted with care.</div>
+        <div class="text-muted small">© 2025 Aurielle Jewelry. All rights reserved.</div>
+      </div>
+    </footer>
+
+    <!-- ── AI Chat Widget ────────────────────────────────────────── -->
+    <div id="chat-bubble">
+      <div id="chat-panel">
+        <div class="chat-header">
+          <div class="chat-header-avatar">💎</div>
+          <div class="chat-header-info">
+            <div class="name">Aurielle Assistant</div>
+            <div class="status"><span class="status-dot"></span> Online · AI-powered</div>
+          </div>
+        </div>
+
+        <div id="chat-messages"></div>
+
+        <div id="quick-replies">
+          <button class="quick-btn" onclick="sendQuick('What collections do you have?')">Collections</button>
+          <button class="quick-btn" onclick="sendQuick('Tell me about your services')">Services</button>
+          <button class="quick-btn" onclick="sendQuick('How can I contact you?')">Contact</button>
+          <button class="quick-btn" onclick="sendQuick('Do you offer custom jewelry?')">Custom Design</button>
+        </div>
+
+        <div id="lead-form">
+          <p style="font-size:13px;color:#6b6056;margin-bottom:10px;">📬 Leave your details and we'll get back to you:</p>
+          <input type="text"  id="lead-name"  placeholder="Your name">
+          <input type="email" id="lead-email" placeholder="Email address">
+          <input type="tel"   id="lead-phone" placeholder="Phone (optional)">
+          <button id="lead-form-submit" onclick="submitLead()">Send my details →</button>
+        </div>
+
+        <div class="chat-input-area">
+          <textarea id="chat-input" placeholder="Ask about our jewelry…" rows="1"></textarea>
+          <button id="chat-send" onclick="sendMessage()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="chat-footer-brand">Powered by Claude AI</div>
+      </div>
+
+      <button id="chat-toggle" onclick="toggleChat()" aria-label="Chat with us">
+        <div id="unread-badge">1</div>
+        <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="white"/>
+        </svg>
+        <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // All API calls go to your Python backend — no key in the browser!
+      const API_BASE = "";   // empty = same origin; set to "http://localhost:5000" for dev
+
+      let chatOpen  = false;
+      let messages  = [];
+      let isLoading = false;
+      let greeted   = false;
+
+      function toggleChat() {
+        chatOpen = !chatOpen;
+        document.getElementById("chat-bubble").classList.toggle("open", chatOpen);
+        document.getElementById("unread-badge").style.display = "none";
+        if (chatOpen && !greeted) {
+          greeted = true;
+          setTimeout(() => addMessage("bot", "Welcome to Aurielle Jewelry! ✨ I'm your AI assistant. Ask me about our collections, pricing, services, or custom designs."), 400);
+        }
+        if (chatOpen) setTimeout(() => document.getElementById("chat-input").focus(), 300);
+      }
+
+      setTimeout(() => { if (!chatOpen) document.getElementById("unread-badge").style.display = "flex"; }, 3000);
+
+      function addMessage(role, text) {
+        const container = document.getElementById("chat-messages");
+        const now = new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+        const wrapper = document.createElement("div");
+        wrapper.className = `msg ${role}`;
+        const bubble = document.createElement("div");
+        bubble.className = "msg-bubble";
+        bubble.textContent = text;
+        const time = document.createElement("div");
+        time.className = "msg-time";
+        time.textContent = now;
+        wrapper.appendChild(bubble);
+        wrapper.appendChild(time);
+        container.appendChild(wrapper);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      function showTyping() {
+        const container = document.getElementById("chat-messages");
+        const t = document.createElement("div");
+        t.id = "typing-indicator";
+        t.className = "typing-bubble";
+        t.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        container.appendChild(t);
+        container.scrollTop = container.scrollHeight;
+      }
+      function removeTyping() { const t = document.getElementById("typing-indicator"); if (t) t.remove(); }
+
+      async function sendMessage() {
+        const input = document.getElementById("chat-input");
+        const userText = input.value.trim();
+        if (!userText || isLoading) return;
+
+        input.value = "";
+        input.style.height = "auto";
+        addMessage("user", userText);
+        messages.push({ role: "user", content: userText });
+        document.getElementById("quick-replies").style.display = "none";
+
+        isLoading = true;
+        document.getElementById("chat-send").disabled = true;
+        showTyping();
+
+        try {
+          const res = await fetch(`${API_BASE}/api/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages })
+          });
+          const data = await res.json();
+          removeTyping();
+
+          if (data.error) {
+            addMessage("bot", "Sorry, something went wrong. Please try again or contact us at hello@aurielle.in.");
+          } else {
+            addMessage("bot", data.reply);
+            messages.push({ role: "assistant", content: data.reply });
+            if (data.show_lead_form) {
+              document.getElementById("lead-form").classList.add("visible");
+              document.getElementById("chat-messages").scrollTop = 99999;
+            }
+          }
+        } catch (err) {
+          removeTyping();
+          addMessage("bot", "Oops! Couldn't reach the server. Please try again shortly.");
+          console.error(err);
+        }
+
+        isLoading = false;
+        document.getElementById("chat-send").disabled = false;
+      }
+
+      function sendQuick(text) {
+        document.getElementById("chat-input").value = text;
+        sendMessage();
+      }
+
+      async function submitLead() {
+        const name  = document.getElementById("lead-name").value.trim();
+        const email = document.getElementById("lead-email").value.trim();
+        const phone = document.getElementById("lead-phone").value.trim();
+        if (!name || !email) { alert("Please enter your name and email."); return; }
+
+        try {
+          await fetch(`${API_BASE}/api/leads`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, phone })
+          });
+        } catch (_) { /* fail silently — lead saved on backend */ }
+
+        document.getElementById("lead-form").innerHTML =
+          `<div style="text-align:center;padding:8px 0;font-size:13px;color:#5a7a5a;">✅ Thank you, <strong>${name}</strong>! We'll be in touch at <strong>${email}</strong> soon.</div>`;
+        addMessage("bot", `Thank you ${name}! 🌟 Our team will reach out at ${email} shortly. We look forward to helping you.`);
+      }
+
+      // Auto-grow textarea + Enter to send
+      const chatInput = document.getElementById("chat-input");
+      chatInput.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = Math.min(this.scrollHeight, 100) + "px";
+      });
+      chatInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+      });
+    </script>
+  </body>
+</html>
