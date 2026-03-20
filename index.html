@@ -45,7 +45,6 @@
       #chat-toggle:hover{ transform:scale(1.08); box-shadow:0 12px 28px rgba(201,167,107,0.55); }
       #chat-toggle svg{ transition:opacity .2s, transform .2s; position:absolute; }
       #chat-toggle .icon-close{ opacity:0; transform:rotate(-90deg); }
-      #chat-bubble.open #chat-toggle .icon-open { opacity:0; transform:rotate(90deg); }
       #chat-bubble.open #chat-toggle .icon-close{ opacity:1; transform:rotate(0); }
 
       #unread-badge{
@@ -120,7 +119,7 @@
       #lead-form{ padding:14px 16px; background:#fff; border-top:1px solid #f0ede8; display:none; }
       #lead-form.visible{ display:block; }
       #lead-form input{
-        width:100%; padding:8px 12px; border:1px solid #e0dbd4;
+        width:100%; padding:8px 12px; border:1px solid #e0d8cc;
         border-radius:8px; font-size:13px; margin-bottom:8px;
         outline:none; transition:border-color .15s; font-family:inherit;
       }
@@ -137,7 +136,7 @@
         display:flex; gap:8px; align-items:flex-end;
       }
       #chat-input{
-        flex:1; border:1px solid #e0dbd4; border-radius:22px;
+        flex:1; border:1px solid #e0d8cc; border-radius:22px;
         padding:9px 16px; font-size:13.5px; font-family:inherit;
         resize:none; outline:none; max-height:100px; overflow-y:auto;
         line-height:1.45; transition:border-color .15s;
@@ -190,12 +189,10 @@
             </div>
             <div class="mt-4 d-flex gap-3">
               <div class="me-3 text-center">
-                <div class="fw-bold">Free Shipping</div>
-                <small class="text-muted">On orders above ₹10,000</small>
+                /* Lines 193-195 omitted */
               </div>
               <div class="text-center">
-                <div class="fw-bold">Lifetime Warranty</div>
-                <small class="text-muted">On manufacturing faults</small>
+                /* Lines 197-199 omitted */
               </div>
             </div>
           </div>
@@ -220,11 +217,7 @@
             <div class="card product-card p-3">
               <img src="https://www.tanishq.co.in/on/demandware.static/-/Sites-Tanishq-product-catalog/default/dw6743bcd9/images/hi-res/51W1D1NGPAA00_1.jpg" class="gallery-img rounded-3" alt="gold-necklace">
               <div class="card-body">
-                <h5 class="card-title mb-1">Heritage Gold Necklace</h5>
-                <p class="text-muted small">Handcrafted 22k gold with filigree detail.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="fw-bold">₹85,000</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
-                </div>
+                /* Lines 223-228 omitted */
               </div>
             </div>
           </div>
@@ -232,11 +225,7 @@
             <div class="card product-card p-3">
               <img src="https://media.istockphoto.com/id/175218669/photo/wedding-ring.jpg?s=612x612&w=0&k=20&c=y4bF26LvC96_pUjPiKfCYEzBxrF7RUOxlIe7-Lj4smY=" class="gallery-img rounded-3" alt="diamond-ring">
               <div class="card-body">
-                <h5 class="card-title mb-1">Solitaire Diamond Ring</h5>
-                <p class="text-muted small">Conflict-free brilliant cut diamond.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="fw-bold">₹1,20,000</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
-                </div>
+                /* Lines 235-240 omitted */
               </div>
             </div>
           </div>
@@ -244,11 +233,7 @@
             <div class="card product-card p-3">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBUKHn6LcfoNbVtYc1ukuYTdSK6sNpTGPndQ&s" class="gallery-img rounded-3" alt="silver-bracelet">
               <div class="card-body">
-                <h5 class="card-title mb-1">Classic Silver Bracelet</h5>
-                <p class="text-muted small">Sterling silver, polished finish.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="fw-bold">₹9,500</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
-                </div>
+                /* Lines 247-252 omitted */
               </div>
             </div>
           </div>
@@ -256,23 +241,15 @@
             <div class="card product-card p-3">
               <img src="https://www.jewelove.in/cdn/shop/files/jewelove-6mm-comfort-fit-platinum-wedding-band-sj-pto-258-men-s-band-only-1154836620_1025x.jpg?v=1744110809" class="gallery-img rounded-3" alt="platinum-band">
               <div class="card-body">
-                <h5 class="card-title mb-1">Platinum Wedding Band</h5>
-                <p class="text-muted small">Comfort fit, elegant matte finish.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="fw-bold">₹65,000</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
-                </div>
+                /* Lines 259-264 omitted */
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4">
             <div class="card product-card p-3">
-              <img src="https://rubans.in/cdn/shop/files/rubans-voguish-18k-gold-plated-brass-crystal-ad-wing-stud-white-pearl-drop-earrings-earrings-1200472142.jpg?v=1761770705&width=360" class="gallery-img rounded-3" alt="pearl-earrings">
+              <img src="https://rubans.in/cdn/shop/files/rubans-voguish-18k-gold-plated-brass-crystal-ad-wing-stud-earrings-earrings-1200472142.jpg?v=1761770705&width=360" class="gallery-img rounded-3" alt="pearl-earrings">
               <div class="card-body">
-                <h5 class="card-title mb-1">Pearl Drop Earrings</h5>
-                <p class="text-muted small">Freshwater pearls with minimal gold detail.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="fw-bold">₹14,500</div><a class="btn btn-sm btn-outline-dark" href="#">View</a>
-                </div>
+                /* Lines 271-276 omitted */
               </div>
             </div>
           </div>
@@ -280,11 +257,7 @@
             <div class="card product-card p-3">
               <img src="https://www.goldcityjeweler.com/wp-content/uploads/2023/04/pasted-image-0-1080x675.jpg" class="gallery-img rounded-3" alt="custom-design">
               <div class="card-body">
-                <h5 class="card-title mb-1">Bespoke Design Service</h5>
-                <p class="text-muted small">Work with our artisans to create your piece.</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="fw-bold">Starting ₹5,000</div><a class="btn btn-sm btn-outline-dark" href="#services">Enquire</a>
-                </div>
+                /* Lines 283-288 omitted */
               </div>
             </div>
           </div>
@@ -302,28 +275,28 @@
         <div class="row g-4">
           <div class="col-md-6 col-lg-3 text-center">
             <div class="service-icon mx-auto mb-3">
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.09 4.24L18.6 7l-3.3 2.7L15.82 14 12 11.77 8.18 14l.52-4.3L5.4 7l4.51-.76L12 2z" fill="#c9a76b"/></svg>
+              /* Lines 305-306 omitted */
             </div>
             <h5>Gold & Silver</h5>
             <p class="text-muted small">Curated collections or custom pieces in gold & silver.</p>
           </div>
           <div class="col-md-6 col-lg-3 text-center">
             <div class="service-icon mx-auto mb-3">
-              <svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 2l2 4 4 .5-3 2.5L16 15l-4-2-4 2 .9-6L4 6.5 8 6l2-4z" fill="#8fa8c9"/></svg>
+              /* Lines 312-313 omitted */
             </div>
             <h5>Diamond Sourcing</h5>
             <p class="text-muted small">Conflict-free diamonds with certification and appraisals.</p>
           </div>
           <div class="col-md-6 col-lg-3 text-center">
             <div class="service-icon mx-auto mb-3">
-              <svg width="30" height="30" viewBox="0 0 24 24"><path d="M5 12h14v2H5z" fill="#b0b0b0"/></svg>
+              /* Lines 319-320 omitted */
             </div>
             <h5>Repairs & Cleaning</h5>
             <p class="text-muted small">Polishing, resizing, stone setting and routine maintenance.</p>
           </div>
           <div class="col-md-6 col-lg-3 text-center">
             <div class="service-icon mx-auto mb-3">
-              <svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e0dfe6"/></svg>
+              /* Lines 326-327 omitted */
             </div>
             <h5>Bespoke Design</h5>
             <p class="text-muted small">Design consultations and 3D previews to bring your idea to life.</p>
@@ -340,31 +313,12 @@
             <h2 class="h3 mb-3">About Aurielle</h2>
             <p class="text-muted">Founded by master artisans passionate about craftsmanship. We blend traditional techniques with modern design — sourcing responsibly and delivering quality that lasts.</p>
             <ul class="list-unstyled text-muted">
-              <li>&#8226; Certified appraisals & insurance documentation</li>
-              <li>&#8226; Ethical sourcing & traceability</li>
-              <li>&#8226; In-house design studio</li>
+              /* Lines 343-346 omitted */
             </ul>
           </div>
           <div class="col-lg-6">
             <div class="row g-3">
-              <div class="col-12">
-                <div class="testimonial">
-                  <div class="d-flex align-items-center mb-3">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=80&q=60" class="rounded-circle me-3" width="48" height="48" alt="customer">
-                    <div><strong>Priya S.</strong><div class="small text-muted">Verified buyer</div></div>
-                  </div>
-                  <p class="small mb-0">"Beautiful craftsmanship and warm service. My engagement ring is everything I hoped for — and more."</p>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="testimonial">
-                  <div class="d-flex align-items-center mb-3">
-                    <img src="https://img.freepik.com/free-photo/designer-working-3d-model_23-2149371896.jpg?semt=ais_hybrid&w=740&q=80" class="rounded-circle me-3" width="48" height="48" alt="customer2">
-                    <div><strong>Amit R.</strong><div class="small text-muted">Repeat customer</div></div>
-                  </div>
-                  <p class="small mb-0">"Quick resizing and excellent attention to detail. Highly recommend their repair service."</p>
-                </div>
-              </div>
+              /* Lines 350-368 omitted */
             </div>
           </div>
         </div>
@@ -379,9 +333,7 @@
             <h3>Get in touch</h3>
             <p class="text-muted">Visit our showroom or send a message to book a consultation.</p>
             <ul class="list-unstyled">
-              <li><strong>Address:</strong> 123 Heritage Lane, Cityname</li>
-              <li><strong>Phone:</strong> +91 98765 43210</li>
-              <li><strong>Email:</strong> hello@aurielle.in</li>
+              /* Lines 382-385 omitted */
             </ul>
           </div>
           <div class="col-lg-6">
@@ -434,7 +386,7 @@
           <textarea id="chat-input" placeholder="Ask about our jewelry…" rows="1"></textarea>
           <button id="chat-send" onclick="sendMessage()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              /* Lines 437-438 omitted */
             </svg>
           </button>
         </div>
@@ -455,7 +407,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       // All API calls go to your Python backend — no key in the browser!
-      const API_BASE = "https://jewels-5zoa.onrender.com";   // empty = same origin; set to "http://localhost:5000" for dev
+      const API_BASE = "https://jewels-backend-32wp.onrender.com";   // empty = same origin; set to "http://localhost:5000" for dev
 
       let chatOpen  = false;
       let messages  = [];
@@ -497,7 +449,7 @@
         const t = document.createElement("div");
         t.id = "typing-indicator";
         t.className = "typing-bubble";
-        t.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        t.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot">';
         container.appendChild(t);
         container.scrollTop = container.scrollHeight;
       }
@@ -532,10 +484,7 @@
           } else {
             addMessage("bot", data.reply);
             messages.push({ role: "assistant", content: data.reply });
-            if (data.show_lead_form) {
-              document.getElementById("lead-form").classList.add("visible");
-              document.getElementById("chat-messages").scrollTop = 99999;
-            }
+            if (data.show_lead_form) {/* Lines 536-538 omitted */}
           }
         } catch (err) {
           removeTyping();
