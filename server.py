@@ -18,12 +18,15 @@ from flask_cors import CORS
 from google import genai
 from google.genai import types
 
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
+
 # ── Configuration ──────────────────────────────────────────────────────────────
 
 app = Flask(__name__, static_folder="static")
 CORS(app)  # allow requests from the same origin / dev servers
 
-GOOGLE_API_KEY = "AIzaSyCjfhpk_iznBWoLGIJoIpA_wi1xM14B-h8"
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")  # Set this in your environment, not here in code!
 LEADS_FILE = Path("leads.json")
 
 # ── Knowledge base (extracted from index.html) ─────────────────────────────────
